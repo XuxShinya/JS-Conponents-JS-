@@ -1,0 +1,110 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  background: #333;
+  color: #fff;
+  height: 100vh;
+  overflow: hidden;
+}
+.container{
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;     
+                  /* 设置y轴滚动条 */
+  scroll-behavior: smooth;
+                  /* 平滑滑动 */
+  scroll-snap-type: y mandatory;
+      /* mandatory属性值意味着每当用户停止滚动时，浏览器必须捕捉到捕捉点。proximity属性没有那么严格，它意味着浏览器可能会在看起来合适的情况下突然捕捉到某个位置。proximity会在特定的某些值实现自动切换 */
+
+}
+
+.navbar{
+  background: rgba(0, 0, 0, 0.7);
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+
+}
+
+.navbar ul{
+  display: flex;
+  list-style: none;
+  width: 100%;
+  justify-content: center;
+}
+.navbar ul a{
+  text-align: center;
+  line-height: 70px;
+  width: 20%;
+  color: #fff;
+  text-decoration: none;
+  margin: 0 1rem;     
+        /* px值除以16 */
+  padding: 1rem;
+}
+.navbar ul a:hover{
+  color:skyblue;
+}
+
+section{
+  display: flex;      
+  flex-direction: column;
+  justify-content: center;
+      /* 新的布局方式，默认情况下不换行，即flex-wrap：nowrap。所有元素会摆在同一行或者同一列，但由于flex-direction指定了column所以会将所有的图片竖着拼接成一长条，这也是与overflow：y相对应。justify-content表示内容显示在中间。 */
+  align-items: center;
+  text-align: center;
+  height: 100vh;
+        /* 我理解成viewheght或者visionheight。 */
+  width: 100%;
+  scroll-snap-align: center;
+}
+section h1{
+  font-size: 40px;
+}
+section p{
+  margin-top: 25px;
+  font-size: 16px;
+  line-height: 35px;
+}
+
+section#city2 h1{
+  margin-top:-350px;
+}
+
+
+section#city3 h1{
+  margin-top:50px;
+}
+section p.p3{
+  margin-top: 420px;
+}
+section#city5 h1{
+  margin-top:400px;
+}
+
+section#city1{
+  background: url("./img/北京2.jpg") no-repeat center
+  center/cover;
+  
+}
+section#city2{
+  background: url("./img/上海.jpg") no-repeat center
+  center/cover;
+}
+section#city3{
+  background: url("./img/澳门.jpg") no-repeat center
+  center/cover;
+}
+section#city4{
+  background: url("./img/台湾.jpg") no-repeat center
+  center/cover;
+}
+section#city5{
+  background: url("./img/香港.jpg") no-repeat center
+  center/cover;
+}
