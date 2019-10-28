@@ -1,0 +1,89 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+
+    #container {
+      position: fixed;
+      height: 100%;
+      width: 100%;
+      background: rgba(21, 31, 39, 1);
+      /* position: relative; */
+    }
+
+    .star {
+      position: absolute;
+      transition: 100s linear;
+    }
+
+    #disp {
+      width: 1000px;
+      height: 700px;
+      margin: 100px auto;
+      /* z-index: 3; */
+      background-color: black;
+      opacity: 1;
+
+    }
+
+    #test {
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <!-- <div id="disp">
+      <div id="test">Test</div>
+    </div> -->
+  </div>
+  <script>
+    var colorList = ['#f5d76e', '#f7ca18', '#f4d03f', '#ececec', '#ecf0f1', '#a2ded0'];
+    var starBox = document.getElementById('container')
+    var num = 250
+    for (let i = 0; i < num; i++) {
+      createStar()
+    }
+    var stars = document.getElementsByClassName('star')
+    setTimeout(() => {
+      for (let i = 0; i < stars.length; i++) {
+        const e = stars[i];
+        e.style.top = Math.random() * 100 + '%'
+        e.style.left = Math.random() * 100 + '%'
+      }
+    }, 1)
+    setInterval(() => {
+      for (let i = 0; i < stars.length; i++) {
+        const e = stars[i];
+        e.style.top = Math.random() * 100 + '%'
+        e.style.left = Math.random() * 100 + '%'
+      }
+    }, 1000)
+    function createStar() {
+      var star = document.createElement('div')
+      star.className = 'star'
+      star.style.top = Math.random() * 100 + '%'
+      star.style.left = Math.random() * 100 + '%'
+      star.style.width = Math.random() * 3 + 'px'
+      star.style.height = Math.random() * 3 + 'px'
+      // star.style.boxShadow = 0 0 (Math.random()*10+'px') colorList[Math.floor(Math.random() * 6)]
+      star.style.boxShadow = 0; 0; (Math.random() * 10 + 'px'); colorList[Math.floor(Math.random() * 6)];
+      star.style.background = colorList[Math.floor(Math.random() * 4)]
+      starBox.append(star)
+    }
+  </script>
+</body>
+
+</html>

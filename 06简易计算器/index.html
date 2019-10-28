@@ -1,0 +1,232 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    #main {
+      width: 300px;
+      overflow: hidden;
+      height: 400px;
+      margin: 50px auto;
+    }
+
+    table {
+      border: 1px solid grey;
+      width: 100%;
+      height: 100%;
+    }
+
+    td {
+      width: 25%;
+      /* border: 1px solid black; */
+      text-align: center;
+      background-color: #e1e1e1;
+      /* box-shadow: 0.5px 0.5px 0.5px 0.5px grey; */
+      border: 1px solid grey;
+    }
+
+    td:hover {
+      background-color: #f1f1f0;
+    }
+
+    #answerPart {
+      background-color: #f0f0f0;
+      text-align: right;
+      padding-right: 20px;
+      position: relative;
+      width: 100%;
+      height: 150px;
+    }
+
+    #inner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 60px;
+      /* width: 200px; */
+      line-height: 60px;
+      font-size: 36px;
+      /* background-color: red; */
+    }
+
+    #answer {
+      width: 100%;
+      max-height: 100%;
+      line-height: 100%;
+      font-size: 48px;
+      padding-top: 20px;
+      vertical-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="main">
+    <table>
+      <tr>
+        <td colspan="4" id="answerPart">
+          <div id="inner"></div>
+          <div id="answer"></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="funcBtn" colspan="2" value='ac'>AC</td>
+        <td class="funcBtn" colspan="2" value='del'>DEL</td>
+      </tr>
+      <tr>
+        <td class="btn" value='7'>7</td>
+        <td class="btn" value='8'>8</td>
+        <td class="btn" value='9'>9</td>
+        <td class="btn" value='*'>*</td>
+      </tr>
+      <tr>
+        <td class="btn" value='4'>4</td>
+        <td class="btn" value='5'>5</td>
+        <td class="btn" value='6'>6</td>
+        <td class="btn" value='/'>/</td>
+      </tr>
+      <tr>
+        <td class="btn" value='1'>1</td>
+        <td class="btn" value='2'>2</td>
+        <td class="btn" value='3'>3</td>
+        <td class="btn" value='-'>-</td>
+      </tr>
+      <tr>
+        <td class="btn" value='0'>0</td>
+        <td class="btn" value='.'>.</td>
+        <td class="btn" value='+'>+</td>
+        <td class="btn" value='='>=</td>
+      </tr>
+    </table>
+  </div>
+  <script>
+    var operInput = document.getElementsByClassName('funcBtn')
+    var inputBtn = document.getElementsByClassName('btn')
+    var inn = document.getElementById('inner')
+    var ans = document.getElementById('answer')
+
+    var disp = []     //显示参数，
+    var port = []     //中转参数，同时用于判断输入是否有值
+    var res = ''      //将存放数组中的数据转成字符串来显示所声明的空字符串
+    var inn = ''      //将存放数组中的数据转成字符串来显示所声明的空字符串
+    function connectStr(arr) {              //设置个函数用于将数组变成字符串，设置成函数的原因是因为方便调用
+      var res = ''
+      for (let i = 0; i < arr.length; i++) {
+        const e = arr[i];
+        res += e
+      }
+      return res;
+    }
+
+    for (let index = 0; index < inputBtn.length; index++) {
+      var flag = inputBtn[12].attributes.value.value
+      inputBtn[index].onclick = function () {
+        var value = inputBtn[index].attributes.value.value
+        //判断是否为小数点
+        if (value == '' || value == '.') {
+          var str = ''
+          if (disp.indexOf('.') == -1) {
+            if (disp.length == 0) {
+              // disp.push(`0${value}`)
+              disp.push('0')
+              disp.push('.')
+              ans.innerText = connectStr(disp)
+            }
+            else {
+              disp.push(value)
+              ans.innerText = connectStr(disp)
+            }
+          }
+        }
+        //isNaN是有效数字放回false，非有效数字返回true
+        if (!isNaN(value)) {
+          //有小数点的情况下才可以push，或者 第一位不为0 才可以push
+          if (disp.indexOf('.') !== -1 || flag !== disp[0]) {
+            disp.push(value)
+            ans.innerText = connectStr(disp)
+          }
+          else {
+            if (value == 0) {
+              return
+            }
+            disp.push(value)
+            ans.innerText = connectStr(disp)
+          }
+        } else {
+          //判断是否为等号之外的操作符
+          if (value !== '=' && value !== '.') {
+            if (disp[disp.length - 1] == '+' || disp[disp.length - 1] == '-' || disp[disp.length - 1] == '*' || disp[disp.length - 1] == '/') {
+              return//判断是否+ - * / 号是结尾，如果是的话则禁止继续输入操作符
+            } else {
+              disp.push(value)
+              disp.forEach((item) => {
+                port.push(item)
+              })
+              ans.innerText = connectStr(disp)
+            }
+            // disp.splice(0)
+          }
+          if (value == '=') {
+            disp.forEach((item) => {  //用于判断是否有值，原本打算做为数据中转存储的，但是思路没想好
+              port.push(item)
+            })
+            // disp.splice(0)
+            console.log(port)
+            if (port.length !== 0) {    //用于判断是否有输入值
+              for (let i = 0; i < disp.length; i++) {
+                const e = disp[i];
+                res += e
+              }
+              inn = res
+              document.getElementById('inner').innerText = inn + '='
+              var a = eval(res)
+              a = a + ''        //转成字符串，便于操作，数组则是于增删改查
+              console.log(typeof a)
+              if (a.length < 8) {     //判断长度，设置格式
+                document.getElementById('answer').innerText = a
+              } else {
+                document.getElementById('answer').innerText = a.slice(0, 7) + '...'
+              }
+              //计算结果后清零为下次做准备
+              res = ''
+              disp.splice(0)
+              port.splice(0)
+            }
+          }
+        }
+      }
+    }
+    for (let i = 0; i < operInput.length; i++) {
+      const e = operInput[i].attributes.value.value;
+      operInput[i].onclick = function () {
+        console.log('aa')
+        if (e == 'ac') {
+          console.log(e)
+          ans.innerText = ''
+          document.getElementById('inner').innerText = ''
+          disp.slice(0)
+          port.slice(0)
+          res = ''
+          inn = ''
+        }
+        if (e == 'del') {
+          console.log(disp)
+          disp.length -= 1
+          console.log(disp)
+          // port.length -= 1
+          document.getElementById('answer').innerText = connectStr(disp)
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

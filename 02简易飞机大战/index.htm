@@ -1,0 +1,326 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.bootcss.com/jquery/3.3.0/jquery.min.js"></script>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    #app {
+      width: 100%;
+    }
+
+    .aaa {
+      width: 40%;
+      float: left;
+    }
+
+    .bbb {
+      width: 59%;
+      float: right;
+    }
+
+    #container {
+      margin-top: 100px;
+      /* margin: 100px auto; */
+      float: right;
+      width: 400px;
+      height: 500px;
+      background-color: black;
+      position: relative;
+    }
+
+    .bullet {
+      position: absolute;
+      /* top: 100px; */
+      width: 10px;
+      height: 20px;
+      border-radius: 30px 30px 0 0;
+      background-color: orange;
+      box-shadow: 0 1px 3px 1px #fff;
+    }
+
+    #plane {
+      top: 440px;
+      left: 170px;
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background: url(./img/feiji2.png) no-repeat;
+      background-size: 100% 100%;
+      transform: rotate(180deg);
+    }
+
+    .hater {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: url(./img/feiji.png) no-repeat;
+      background-size: 100% 100%;
+    }
+
+    #content {
+      /* padding: 0; */
+      /* position: absolute; */
+      /* top: 0px; */
+      /* left: 44%; */
+      margin-top: 100px;
+      width: 30%;
+      height: 99px;
+      border: 1px solid red;
+      vertical-align: center;
+      /* text-align: center; */
+      font-size: 48px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="aaa">
+      <div id="container">
+        <div id='plane'></div>
+      </div>
+    </div>
+    <div class="bbb">
+      <div id="content">得分：<p id="score" style="display: inline-block;">0</p>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    var flag = true
+    var score = 0
+    //游戏结束清除定时器
+    cleartimer = function () {
+      flag = false
+      clearInterval(haterMoveTimer)
+      clearInterval(bulletMoveTimer)
+      clearInterval(bulletValid)
+      clearInterval(haterMaker)
+    }
+
+    //检测碰撞
+    crashCheck = function () {
+      var pleft = parseInt($('#plane').css('left'))
+      var ptop = parseInt($('#plane').css('top'))
+      if (document.getElementsByClassName('hater')) {
+        var top1 = document.getElementsByClassName('hater')
+        for (var i = 0; i < top1.length; i++) {
+          // console.log(top1)
+          var hleft = top1[i].offsetLeft
+          var htop = top1[i].offsetTop
+          if ((pleft > hleft && pleft < hleft + 40) && (ptop < htop + 40 && ptop > htop)) {
+            cleartimer()
+            // alert('game over!!')
+            document.getElementById('content').innerHTML = '游戏结束'
+            console.log('飞机左上角')
+          }
+          if ((pleft + 60) > hleft && (pleft + 60) < hleft + 40 && ptop < htop + 40 && ptop > htop) {
+            cleartimer()
+            // alert('game over!!')
+            document.getElementById('content').innerHTML = '游戏结束'
+            console.log('飞机右上角')
+          }
+          if ((pleft + 60) > hleft && (pleft + 60) < hleft + 40 && (ptop + 60) < htop + 40 && (ptop + 60) > htop) {
+            cleartimer()
+            // alert('game over!!')
+            document.getElementById('content').innerHTML = '游戏结束'
+            console.log('飞机右下角')
+          }
+          if (pleft > hleft && pleft < hleft + 40 && (ptop + 60) < htop + 40 && (ptop + 60) > htop) {
+            cleartimer()
+            // alert('game over!!')
+            document.getElementById('content').innerHTML = '游戏结束'
+            console.log('飞机左下角')
+          }
+        }
+      }
+    }
+    crashCheck2 = function (bleft, btop) {
+      if (document.getElementsByClassName('hater')) {
+        var top1 = document.getElementsByClassName('hater')
+        for (var i = 0; i < top1.length; i++) {
+          // console.log(top1)
+          var hleft = top1[i].offsetLeft
+          var htop = top1[i].offsetTop
+          if (bleft > hleft && bleft < hleft + 40 && btop < htop + 40 && btop > htop) {
+            // alert('game over')
+            top1[i].remove()
+            console.log('子弹左上角')
+            score = score + 10
+            document.getElementById('score').innerText = score
+            return 1
+          }
+          if ((bleft + 20) > hleft && (bleft + 20) < hleft + 40 && btop < htop + 40 && btop > htop) {
+            // alert('game over')
+            top1[i].remove()
+            console.log('子弹右上角')
+            score = score + 10
+            document.getElementById('score').innerText = score
+            return 1
+          }
+          if ((bleft + 20) > hleft && (bleft + 20) < hleft + 40 && (btop + 20) < htop + 40 && (btop + 20) > htop) {
+            // alert('game over')
+            top1[i].remove()
+            console.log('子弹右下角')
+            score = score + 10
+            document.getElementById('score').innerText = score
+            return 1
+          }
+          if (bleft > hleft && bleft < hleft + 40 && (btop + 20) < htop + 40 && (btop + 20) > htop) {
+            // alert('game over')
+            top1[i].remove()
+            console.log('子弹左下角')
+            score = score + 10
+            document.getElementById('score').innerText = score
+            return 1
+          }
+
+        }
+      }
+    }
+
+    //限定范围
+    calcRange = function (a, b) {
+      if (parseInt(a) < 0) {
+        console.log('aaa')
+        $('#plane').css('top', '0px')
+      }
+      if (parseInt(a) > 440) {
+        $('#plane').css('top', '440px')
+      }
+      if (parseInt(b) < 0) {
+        // console.log('aaa')
+        $('#plane').css('left', '0px')
+      }
+      if (parseInt(b) > 340) {
+        // console.log('aaa')
+        $('#plane').css('left', '340px')
+      }
+    }
+
+    // 子弹生成 
+    var prepareTime = false
+    var bulletValid = setInterval(() => {
+      prepareTime = true
+    }, 300)
+    fire = function () {
+      console.log('aaaa')
+      if (prepareTime == false) {
+        return
+      }
+      var b = document.createElement('div')
+      b.setAttribute('class', 'bullet')
+      var top = $('#plane').css('top')
+      var left = $('#plane').css('left')
+      top = parseInt(top) - 20 + 'px'
+      left = parseInt(left) + 25 + 'px'
+      b.style.top = top
+      b.style.left = left
+      $('#container').append(b)
+      prepareTime = false
+    }
+
+    //敌人生成
+    hater = function () {
+      console.log('hater')
+      var b = document.createElement('div')
+      b.setAttribute('class', 'hater')
+      var left = Math.floor(Math.random() * (360 - 0))
+      left = left + 'px'
+      b.style.left = left
+      $('#container').append(b)
+    }
+    var haterMaker = setInterval(() => {
+      hater()
+    }, 1000)
+
+    //敌人移动
+    var haterMoveTimer = setInterval(() => {
+      if (document.getElementsByClassName('hater')) {
+        var top1 = document.getElementsByClassName('hater')
+        for (var i = 0; i < top1.length; i++) {
+          // console.log(top1)
+          var top = top1[i].offsetTop
+          top = parseInt(top) + 10 + 'px'
+          top1[i].style.top = top
+          if (parseInt(top1[i].style.top) > 460) {
+            top1[i].remove()
+          }
+        }
+      }
+    }, 250)
+
+    //子弹移动
+    var bulletMoveTimer = setInterval(() => {
+      if (document.getElementsByClassName('bullet')) {
+        var top1 = document.getElementsByClassName('bullet')
+        for (var i = 0; i < top1.length; i++) {
+          // console.log(top1)
+          var bleft = top1[i].offsetLeft
+          var btop = top1[i].offsetTop
+          var top = top1[i].offsetTop
+          top = parseInt(top) - 15 + 'px'
+          top1[i].style.top = top
+          var flag = crashCheck2(bleft, btop)
+          if (parseInt(top1[i].style.top) < 0 || flag == 1) {
+            top1[i].remove()
+          }
+
+        }
+
+      }
+    }, 100)
+
+    //飞机的移动
+    document.onkeydown = function (e) {
+      if (flag == true) {
+        if (event.keyCode == 65) {
+          var dom = $('#plane').css('left')
+          dom = parseInt(dom) - 10 + 'px'
+          // console.log(dom)
+          $('#plane').css('left', dom)
+        }
+        if (event.keyCode == 68) {
+          var dom = $('#plane').css('left')
+          dom = parseInt(dom) + 10 + 'px'
+          // console.log(dom)
+          $('#plane').css('left', dom)
+        } if (event.keyCode == 87) {
+          var dom = $('#plane').css('top')
+          dom = parseInt(dom) - 10 + 'px'
+          // console.log(dom)
+          $('#plane').css('top', dom)
+        }
+        if (event.keyCode == 83) {
+          var dom = $('#plane').css('top')
+          dom = parseInt(dom) + 10 + 'px'
+          // console.log(dom)
+          $('#plane').css('top', dom)
+        }
+        calcRange($('#plane').css('top'), $('#plane').css('left'))
+        if (event.keyCode == 74) {
+          fire()
+        }
+
+      }
+    }
+    setInterval(() => {
+      crashCheck()
+      // crashCheck2()
+    }, 100)
+
+
+
+  </script>
+</body>
+
+</html>

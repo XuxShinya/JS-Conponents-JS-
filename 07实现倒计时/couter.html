@@ -1,0 +1,53 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    #counter {
+      border: 1px dashed gray;
+      width: 300px;
+      height: 100px;
+      line-height: 100px;
+      text-align: center;
+      font-size: 24px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="counter"></div>
+  <script>
+    var counterBox = document.getElementById('counter')
+    function counte() {
+      var date = new Date()
+      var date2 = new Date('2019-10-28 20:40:59')
+      var time1 = date.getTime()
+      var time2 = date2.getTime()
+      var timeStamp = time2 - time1
+      if (timeStamp <= 0) {
+        counterBox.innerHTML = `00:00:00`
+        clearInterval(timeId)
+        return
+      }
+      var hour = Math.floor(timeStamp / (1000 * 60 * 60))
+      var sec4Hour = hour * 60 * 60 * 1000
+      var min = Math.floor((timeStamp - sec4Hour) / (1000 * 60))
+      var sec4Min = min * 60 * 1000
+      var sec = Math.floor((timeStamp - sec4Hour - sec4Min) / 1000)
+      hour = hour < 10 ? `0${hour}` : hour
+      min = min < 10 ? `0${min}` : min
+      sec = sec < 10 ? `0${sec}` : sec
+      counterBox.innerHTML = `${hour}:${min}:${sec}`
+    }
+    counte()
+    var timeId = setInterval(function () {
+      counte()
+    }, 1000)
+
+  </script>
+</body>
+
+</html>
